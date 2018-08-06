@@ -58,6 +58,7 @@ class ViewController: UIViewController {
     @IBAction func selectNextPlayer(_ sender: UIButton) {
         //return random number from range of 1-10
         nextPlayer.text = String(arc4random_uniform(10) + 1)
+        storyPrompt.text = ""
     }
     
     func generatePrompt(tense: PromptTense)-> String {
@@ -70,8 +71,14 @@ class ViewController: UIViewController {
     
     func generatePastAction() -> String {
         var prompt: String = ""
-        //generate Past tense prompt
         
+        //generate Past tense prompt
+        let initialQuestionIndex = Int(arc4random_uniform(UInt32(pastTensePrompts.count)))
+        let initialQuestion = pastTensePrompts[initialQuestionIndex]
+        
+        let timeIntervalString = createCorrectTimeIntervalString()
+        
+        prompt = "\(initialQuestion) \(timeIntervalString) ago."
         
         return prompt
     }
@@ -80,8 +87,31 @@ class ViewController: UIViewController {
         var prompt: String = ""
         
         //generate Future tense prompt
+        let initialQuestionIndex = Int(arc4random_uniform(UInt32(futureTensePrompts.count)))
+        let initialQuestion = futureTensePrompts[initialQuestionIndex]
+        
+        let timeIntervalString = createCorrectTimeIntervalString()
+        
+        prompt = "\(initialQuestion) \(timeIntervalString) ?"
         
         return prompt
+    }
+    
+    func createCorrectTimeIntervalString() -> String {
+        let timeIntervalString: String
+        
+        let timeIntervalNumbersIndex = Int(arc4random_uniform(UInt32(timeIntervalNumbers.count)))
+        let timeIntervalNumber = timeIntervalNumbers[timeIntervalNumbersIndex]
+        
+        let timeIntervalUnitsIndex = Int(arc4random_uniform(UInt32(timeIntervalUnits.count)))
+        var timeIntervalUnit = timeIntervalUnits[timeIntervalUnitsIndex]
+        
+        if timeIntervalNumber > "1" {
+            timeIntervalUnit += "s"
+        }
+        
+        timeIntervalString = "\(timeIntervalNumber) \(timeIntervalUnit)"
+        return timeIntervalString
     }
     
 }
